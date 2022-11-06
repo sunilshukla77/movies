@@ -17,5 +17,6 @@ import java.util.List;
 public class TheatreResponse implements Serializable {
     private static final long serialVersionUID = -4167846641836693299L;
 
-    private List<String> theatres;
+    String theatreName;
+    List<String> movieName;
 }
