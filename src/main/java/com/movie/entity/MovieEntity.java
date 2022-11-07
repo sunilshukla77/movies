@@ -1,18 +1,15 @@
 package com.movie.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.Accessors;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Accessors(chain = true)
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString
 @Entity
 @Table(name = "MOVIE")
@@ -33,6 +30,7 @@ public class MovieEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "theatre_id")
+    @ToString.Exclude
     private TheatreEntity theatreEntity;
 
     public MovieEntity(String movieName, String showDate, String showTime, int availableSeat,TheatreEntity theatreEntity) {

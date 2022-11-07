@@ -2,6 +2,7 @@ package com.movie.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Accessors(chain = true)
 @Getter
+@ToString
 @NoArgsConstructor
 public class TheatreRequest implements Serializable {
     private static final long serialVersionUID = 1524680640404367184L;
