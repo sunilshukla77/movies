@@ -18,7 +18,6 @@ public class MovieEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
-
     @Column(name = "MOVIE_NAME")
     private String movieName;
     @Column(name = "SHOW_DATE")
@@ -29,7 +28,7 @@ public class MovieEntity implements Serializable {
     private int availableSeat;
 
     @ManyToOne
-    @JoinColumn(name = "theatre_id")
+    @JoinColumn(name = "theatreId")
     @ToString.Exclude
     private TheatreEntity theatreEntity;
 

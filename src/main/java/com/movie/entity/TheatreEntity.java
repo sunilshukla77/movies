@@ -20,7 +20,7 @@ public class TheatreEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long theatre_id;
+    private Long theatreId;
 
     @Column(name = "theatre_name")
     private String theatreName;
@@ -38,7 +38,7 @@ public class TheatreEntity implements Serializable {
     }
 
     public TheatreEntity(Long id, String theatreName, String cityName) {
-        this.theatre_id = id;
+        this.theatreId = id;
         this.theatreName = theatreName;
         this.cityName = cityName;
     }
