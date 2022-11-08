@@ -2,7 +2,6 @@ package com.movie.service.impl;
 
 import com.movie.dto.request.MovieDto;
 import com.movie.dto.request.TheatreRequest;
-import com.movie.dto.request.UpdateCity;
 import com.movie.dto.response.TheatreResponse;
 import com.movie.entity.MovieEntity;
 import com.movie.entity.TheatreEntity;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 public class TheatreService implements ITheatreService {
     @Autowired
     private TheatreRepository theatreRepository;
-
     @Override
     public TheatreResponse save(TheatreRequest theatreRequest) {
         TheatreResponse theatreResponse = saveTheatreResponse(theatreRequest);
@@ -51,20 +49,6 @@ public class TheatreService implements ITheatreService {
         return theatreResponse;
     }
 
-    @Override
-    public TheatreResponse updateCity(UpdateCity updateCity) {
-        TheatreResponse theatreResponse = null;
-
-        if (updateCity.getId() == 2) {
-            TheatreEntity theatreEntity = new TheatreEntity(updateCity.getId(), updateCity.getCityName(), updateCity.getTheatreName());
-            theatreRepository.save(theatreEntity);
-            log.info("Mapping in Request {}", updateCity);
-        } else {
-            throw new ContentNotFoundException(HttpStatus.NO_CONTENT, ErrorMapping.BMS001);
-        }
-        return theatreResponse;
-    }
-
     public void deleteMovie(String movieName, String theatreName, String showTime) {
         //theatreRepository.deleteByMovieName(movieName, theatreName, showTime);
     }
@@ -81,20 +65,24 @@ public class TheatreService implements ITheatreService {
                         .filter(movieEntity -> movieEntity.getMovieName().equalsIgnoreCase(movieName) && showDay.equalsIgnoreCase(movieEntity.getShowDate()))
                         .collect(Collectors.toList());
                 log.info("Movie list {} /n/t/t/t *********", movieEntityList);
+                if(movieEntityList.isEmpty()) {
 
-                List<MovieDto> movieDtoList = new ArrayList<>();
-                for (MovieEntity movieE : movieEntityList) {
-                    MovieDto movieDto = new MovieDto();
-                    movieDto.setMovieName(movieE.getMovieName());
-                    movieDto.setShowDate(movieE.getShowDate());
-                    movieDto.setShowTime(movieE.getShowTime());
-                    movieDto.setAvailableSeat(movieE.getAvailableSeat());
-                    movieDtoList.add(movieDto);
+                    List<MovieDto> movieDtoList = new ArrayList<>();
+                    for (MovieEntity movieE : movieEntityList) {
+                        MovieDto movieDto = new MovieDto();
+                        movieDto.setMovieName(movieE.getMovieName());
+                        movieDto.setShowDate(movieE.getShowDate());
+                        movieDto.setShowTime(movieE.getShowTime());
+                        movieDto.setAvailableSeat(movieE.getAvailableSeat());
+                        movieDtoList.add(movieDto);
+                    }
+                    theatreResponse.setTheatreName(te.getTheatreName());
+                    theatreResponse.setCityName(te.getCityName());
+                    theatreResponse.setMovieDtoList(movieDtoList);
+                    theatreResponseList.add(theatreResponse);
+                }else {
+                    throw new ContentNotFoundException(HttpStatus.NO_CONTENT, ErrorMapping.BMS002);
                 }
-                theatreResponse.setTheatreName(te.getTheatreName());
-                theatreResponse.setCityName(te.getCityName());
-                theatreResponse.setMovieDtoList(movieDtoList);
-                theatreResponseList.add(theatreResponse);
             }
         } else {
             throw new ContentNotFoundException(HttpStatus.NO_CONTENT, ErrorMapping.BMS001);

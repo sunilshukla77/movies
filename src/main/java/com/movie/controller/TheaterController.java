@@ -2,7 +2,6 @@ package com.movie.controller;
 
 
 import com.movie.dto.request.TheatreRequest;
-import com.movie.dto.request.UpdateCity;
 import com.movie.dto.response.TheatreResponse;
 import com.movie.service.impl.TheatreService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,14 +30,6 @@ public class TheaterController {
         TheatreResponse theatreResponse= theatreService.save(theatreRequest);
         return new ResponseEntity<>(theatreResponse, HttpStatus.CREATED);
     }
-
-    @PutMapping(path ="/updateCity")
-    public ResponseEntity<TheatreResponse> updateCityInTheatre(@RequestBody UpdateCity updateCity){
-        log.info("Update city in theatre: {}, update Detail {} ",updateCity.getTheatreName(), updateCity);
-        TheatreResponse theatreResponse = theatreService.updateCity(updateCity);
-        return new ResponseEntity<>(theatreResponse, HttpStatus.OK);
-    }
-
     @PutMapping(path ="/updateMovie")
     public ResponseEntity<Integer> updateMovieInTheatre(@RequestBody TheatreRequest theatreRequest){
         log.info("Update Movie in theatre: {}, update Detail {} ",theatreRequest.getTheatreName(), theatreRequest);
