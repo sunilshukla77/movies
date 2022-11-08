@@ -38,9 +38,10 @@ public class TheaterController {
     }
 
     @DeleteMapping(path = "/deleteMovie")
-    public ResponseEntity deleteShowFromTheatre(@RequestParam String moviename, @RequestParam String theatreName, @PathVariable("showTime") String showTime){
-        theatreService.deleteMovie(moviename, theatreName, showTime);
-        return null;
+    public ResponseEntity<Integer> deleteShowFromTheatre(@RequestBody TheatreRequest theatreRequest){
+        log.info("Update Movie in theatre: {}, update Detail {} ",theatreRequest.getTheatreName(), theatreRequest);
+        int moviesUpdated = theatreService.deleteMovie(theatreRequest);
+        return new ResponseEntity<>(moviesUpdated, HttpStatus.OK);
     }
 
 

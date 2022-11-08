@@ -9,4 +9,5 @@ public interface ITheatreService {
     TheatreResponse save(TheatreRequest movie);
     int updateMovie(TheatreRequest theatreRequest);
     List<TheatreResponse> getMovieDetail(String cityName, String movieName, String showTime, String showDay);
+    public int deleteMovie(TheatreRequest theatreRequest);
 }

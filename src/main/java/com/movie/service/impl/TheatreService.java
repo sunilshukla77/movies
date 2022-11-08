@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,11 @@ public class TheatreService implements ITheatreService {
 
     @Override
     public int updateMovie(TheatreRequest theatreRequest) {
+        List<MovieEntity> movieEntityList = getMovieEntitiesUpdated(theatreRequest, "update");
+        return movieEntityList.size();
+    }
+
+    private List<MovieEntity> getMovieEntitiesUpdated(TheatreRequest theatreRequest, String operation) {
         TheatreEntity theatreEntity = theatreRepository.findByCityNameAndTheatreName(theatreRequest.getCityName(), theatreRequest.getTheatreName());
         List<MovieEntity> movieEntityList =null;
         for (MovieDto movieDto: theatreRequest.getMovies()) {
@@ -48,15 +54,22 @@ public class TheatreService implements ITheatreService {
                 for (MovieEntity m : movieEntityList) {
                     m.setAvailableSeat(movieDto.getAvailableSeat());
                     m.setShowTime(movieDto.getShowTime());
-                    movieRepository.save(m);
-                    log.info("Movie updated in database {}", m);
+                    if("update".equalsIgnoreCase(operation)) {
+                        movieRepository.save(m);
+                        log.info("Movie {} in database {}", operation, m);
+                    } else {
+                        movieRepository.deleteById(m.getId());
+                        //theatreRepository.deleteById(theatreEntity.getTheatreId());
+                        log.info("Movie {} in database {} ", operation, m);
+                    }
+
                 }
             }else {
                 throw new ContentNotFoundException(HttpStatus.BAD_REQUEST, ErrorMapping.BMS003);
             }
-            log.info("Movie need to update {}", movieEntityList);
+            log.info("Movie {} {}", operation, movieEntityList);
         }
-        return movieEntityList.size();
+        return movieEntityList;
     }
 
     private TheatreResponse saveTheatreResponse(TheatreRequest theatreRequest) {
@@ -72,8 +85,13 @@ public class TheatreService implements ITheatreService {
         return theatreResponse;
     }
 
-    public void deleteMovie(String movieName, String theatreName, String showTime) {
-        //theatreRepository.deleteByMovieName(movieName, theatreName, showTime);
+    @Override
+    @Transactional
+    public int deleteMovie(TheatreRequest theatreRequest) {
+        //TheatreEntity threatreEnity = new TheatreEntity();
+        //threatreEnity.getMovies().removeIf(movieEntity -> movieEntity.getMovieName())
+        List<MovieEntity> movieEntityList = getMovieEntitiesUpdated(theatreRequest, "delete");
+        return movieEntityList.size();
     }
 
     @Override
