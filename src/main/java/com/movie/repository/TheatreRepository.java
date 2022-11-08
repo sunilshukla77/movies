@@ -18,6 +18,8 @@ public interface TheatreRepository extends JpaRepository<TheatreEntity, Long> {
 
     Collection<TheatreEntity> findByCityName(String cityName);
 
+    TheatreEntity findByCityNameAndTheatreName(String cityName, String theaterName);
+
     //@Query("select c from Customer c inner join c.orders o where c.id = :customerId and o.id = :orderId")
     //Optional<Customer> findCustomerByOrderId(long orderId, long customerId);
 
