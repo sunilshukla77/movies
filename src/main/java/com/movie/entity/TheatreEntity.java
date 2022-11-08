@@ -22,22 +22,21 @@ public class TheatreEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long theatreId;
 
-    @Column(name = "theatre_name")
-    private String theatreName;
-
     @Column(name = "city_name")
     private String cityName;
 
+    @Column(name = "theatre_name")
+    private String theatreName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY )
     private List<MovieEntity> movies;
 
-    public TheatreEntity(String theatreName, String cityName) {
+    public TheatreEntity(String cityName, String theatreName) {
         this.theatreName = theatreName;
         this.cityName = cityName;
     }
 
-    public TheatreEntity(Long id, String theatreName, String cityName) {
+    public TheatreEntity(Long id, String cityName, String theatreName) {
         this.theatreId = id;
         this.theatreName = theatreName;
         this.cityName = cityName;
